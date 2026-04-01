@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBP Group Information | CODEC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #0072bc; --secondary: #00ff99; --warning: #ffcc00; --danger: #ff4d4d; --bg-dark: #001f3f; --text: #ffffff; --glass: rgba(255, 255, 255, 0.12); }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: #001f3f; color: #ffffff !important; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #001f3f, #004080); z-index: -2; }
+        .header { text-align: center; padding: 30px 20px; z-index: 1; max-width: 800px;}
+        .header h2 { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 0; letter-spacing: 1px; font-size: 1.5rem;}
+        .header p { opacity: 0.8; font-size: 0.9em; margin-top: 15px; line-height: 1.6; }
+        .container { width: 90%; max-width: 1100px; background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 35px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; z-index: 2; }
+        .section-title { grid-column: 1 / -1; border-bottom: 1px solid var(--secondary); padding-bottom: 5px; margin-top: 20px; color: #FFFFFF; font-size: 1rem; font-weight: 800; text-transform: uppercase; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 0.8em; margin-bottom: 6px; color: #00FFFF; font-weight: 700; }
+        input, select, textarea { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); color: white; font-size: 0.9em; }
+        input:focus, select:focus { border-color: var(--secondary); outline: none; }
+        input[readonly] { background: rgba(255, 255, 255, 0.05); color: #aaa; }
+        .actions { grid-column: 1 / -1; margin-top: 30px; display: flex; justify-content: center; }
+        .btn-submit { min-width: 250px; padding: 15px 40px; border: none; border-radius: 8px; font-weight: 700; background: #ffffff; color: #001f3f; cursor: pointer; text-transform: uppercase; transition: all 0.3s ease; }
+        .btn-submit:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+        .hidden-field { display: none; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
+        .modal-content { background: #002b56; margin: 10% auto; padding: 30px; border: 1px solid var(--secondary); width: 90%; max-width: 500px; border-radius: 20px; text-align: center; }
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; color: var(--secondary); font-size: 1.2em; }
+
+.form-description { 
+    background: rgba(255, 255, 255, 0.05); 
+    border-left: 4px solid #00ff99; /* var(--secondary) */
+    padding: 20px; 
+    margin: 20px auto 30px; 
+    text-align: left; 
+    font-size: 0.9rem; 
+    line-height: 1.6; 
+    border-radius: 0 12px 12px 0;
+    max-width: 1000px;
+    width: 85%;
+}
+.form-description h4 { 
+    margin-top: 0; 
+    color: #ffcc00; /* var(--warning) */
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+}
+    </style>
+</head>
+<body>
+
+<div class="bg-overlay"></div>
+<div class="header">
+    <h2>Community Group Information Collection Form</h2>
+    <p><b>Program:</b> Community-Based Protection (CBP)<br>UNHCR-CODEC EPRC Project<br>This form is centrally managed by the IM Team</p>
+</div>
+<div class="form-description">
+    <h4>Form Description</h4>
+    <p>This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program. The data will support effective planning, monitoring, and coordination of protection activities across different groups and communities.</p>
+    <p style="margin-bottom: 0; font-weight: 300;"><i>All information provided will be used solely for programmatic purposes and handled with confidentiality. Your cooperation in providing accurate and complete information is highly appreciated.</i></p>
+</div>
+
+<form id="cbpForm" class="container">
+    <div class="section-title">Core Information</div>
+    <div class="field">
+        <label>Group Name</label>
+        <select id="groupName" name="groupName" required>
+            <option value="">--Select Group--</option>
+            <option value="CMG">Community Man Group (Age 25+)</option>
+            <option value="CWG">Community Woman Group (Age 25+)</option>
+            <option value="CYB">Community Youth Boys Group (Age 15-25)</option>
+            <option value="CYG">Community Youth Girls Group (Age 15-25)</option>
+            <option value="SHG">Self Help Group (Age 18+)</option>
+            <option value="YEC">Youth Environment Club</option>
+        </select>
+    </div>
+    <div class="field"><label>Name</label><input type="text" name="name" required></div>
+    <div class="field"><label>Father's Name</label><input type="text" name="fatherName" required></div>
+    <div class="field"><label>Mobile Number</label><input type="text" name="mobile" pattern="01[0-9]{9}" required></div>
+    <div class="field"><label>Education</label><input type="text" name="education"></div>
+    <div class="field"><label>Occupation</label><input type="text" name="occupation"></div>
+    <div class="field"><label>Disability Status</label>
+        <select name="disability" required><option value="No">No</option><option value="Yes">Yes</option></select>
+    </div>
+
+    <div class="section-title">Personal & Location Details</div>
+    <div class="field"><label>Date of Birth</label><input type="date" id="dob" name="dob" onchange="calculateAge()" required></div>
+    <div class="field"><label>Calculated Age</label><input type="text" id="age" name="age" readonly></div>
+    <div class="field"><label>Camp Name</label>
+        <select name="camp" required>
+            <option value="">--Select--</option><option>Camp-2E</option><option>Camp-2W</option><option>Camp-6</option><option>Camp-7</option><option>Camp-19</option><option>Camp-20</option>
+        </select>
+    </div>
+    <div class="field"><label>Block</label><input type="text" name="block" required></div>
+    <div class="field"><label>House Number</label><input type="text" name="house"></div>
+    <div class="field"><label>Individual ID</label><input type="text" name="indivId" id="indivId"></div>
+    <div class="field"><label>FCN</label><input type="text" name="fcn" id="fcn"></div>
+
+    <div class="section-title">Status & Participation</div>
+    <div class="field"><label>Joining Date</label><input type="date" id="joiningDate" name="joiningDate" onchange="calculateDuration()" required></div>
+    <div class="field"><label>Total Duration</label><input type="text" id="duration" name="duration" readonly></div>
+    <div class="field"><label>Training Received</label>
+        <select id="trainingReceived" name="trainingReceived" onchange="toggleField('trainingReceived', 'trainingNameField', 'Yes')">
+            <option value="No">No</option><option value="Yes">Yes</option>
+        </select>
+    </div>
+    <div class="field hidden-field" id="trainingNameField"><label>Name of Training</label><input type="text" name="trainingName"></div>
+    <div class="field"><label>English Club Status</label>
+        <select name="englishClub"><option value="No">No</option><option value="Yes">Yes</option></select>
+    </div>
+    <div class="field"><label>Active Status</label>
+        <select id="activeStatus" name="activeStatus" onchange="toggleField('activeStatus', 'inactiveDateField', 'Inactive')">
+            <option value="Active">Active</option><option value="Inactive">Inactive</option>
+        </select>
+    </div>
+    <div class="field hidden-field" id="inactiveDateField"><label>Since When Inactive?</label><input type="date" name="inactiveDate"></div>
+    <div class="field" style="grid-column: 1/-1;"><label>Remarks</label><textarea name="remarks" rows="2"></textarea></div>
+
+    <div class="actions">
+        <button type="button" class="btn-submit" onclick="validateAndSubmit()">Submit Information</button>
+    </div>
+</form>
+
+<div id="loading" class="loading-overlay">⏳ Verifying Data...</div>
+
+<div id="alertModal" class="modal">
+    <div class="modal-content">
+        <h3 id="alertTitle" style="color:var(--danger)">⚠️ Error</h3>
+        <p id="alertMsg"></p>
+        <button onclick="closeModal()" class="btn-submit" style="min-width:100px; margin-top:20px;">Understand</button>
+    </div>
+</div>
+
+<script>
+    function toggleField(triggerId, targetId, showValue) {
+        document.getElementById(targetId).style.display = (document.getElementById(triggerId).value === showValue) ? 'flex' : 'none';
+    }
+
+    function calculateAge() {
+        const dob = new Date(document.getElementById('dob').value);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) { age--; }
+        document.getElementById('age').value = age;
+    }
+
+    function calculateDuration() {
+        const start = new Date(document.getElementById('joiningDate').value);
+        const end = new Date();
+        let y = end.getFullYear() - start.getFullYear();
+        let m = end.getMonth() - start.getMonth();
+        let d = end.getDate() - start.getDate();
+        if (d < 0) { m--; d += new Date(end.getFullYear(), end.getMonth(), 0).getDate(); }
+        if (m < 0) { y--; m += 12; }
+        document.getElementById('duration').value = `${y}Y, ${m}M, ${d}D`;
+    }
+
+    function validateAndSubmit() {
+        const form = document.getElementById('cbpForm');
+        if(!form.checkValidity()) { form.reportValidity(); return; }
+
+        const age = parseInt(document.getElementById('age').value);
+        const group = document.getElementById('groupName').value;
+        let restrictionMet = true;
+        let message = "";
+
+        if ((group === "CMG" || group === "CWG") && age < 25) { restrictionMet = false; message = "Age must be 25+ for Man/Woman groups."; }
+        else if ((group === "CYB" || group === "CYG") && (age < 15 || age > 25)) { restrictionMet = false; message = "Youth age must be 15-25."; }
+        else if (group === "SHG" && age < 18) { restrictionMet = false; message = "SHG requires age 18+."; }
+
+        if (!restrictionMet) { showAlert("Age Restriction", message); return; }
+
+        submitToGoogleSheet();
+    }
+
+    function showAlert(title, msg) {
+        document.getElementById('alertTitle').innerText = title;
+        document.getElementById('alertMsg').innerText = msg;
+        document.getElementById('alertModal').style.display = 'block';
+    }
+
+    function closeModal() { document.getElementById('alertModal').style.display = 'none'; }
+
+    async function submitToGoogleSheet() {
+        const loading = document.getElementById('loading');
+        loading.style.display = 'flex';
+        
+        const form = document.getElementById('cbpForm');
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
+
+        // --- PASTE YOUR URL HERE ---
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw5AJWG2p59Yui8K_an4HDobzNt8OfNGvt2k64aPbtckEejIhEJArkEd0XZCZ_-ufm5FA/exec"; 
+
+        try {
+            const response = await fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors', // We use no-cors to bypass redirect issues, but we can't read the response body. 
+                body: JSON.stringify(payload)
+            });
+
+            // Since no-cors doesn't allow reading the JSON result, 
+            // the check happens on the script side. 
+            // For a truly robust duplicate check response, 
+            // using google.script.run inside Apps Script is recommended.
+            
+            loading.style.display = 'none';
+            alert("✅ Form submitted. Please check the spreadsheet to confirm if it was accepted or rejected due to duplicates.");
+            form.reset();
+        } catch (e) {
+            loading.style.display = 'none';
+            alert("Connection error.");
+        }
+    }
+</script>
+</body>
+</html>

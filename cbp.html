@@ -45,6 +45,23 @@
     text-transform: uppercase; 
     letter-spacing: 1px; 
 }
+        .typewriter-text {
+    display: inline-block;
+    overflow: hidden;
+    border-right: 2px solid var(--secondary); /* The cursor */
+    white-space: normal;
+    margin: 0;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--secondary); }
+}
+
+.cursor-blink {
+    animation: blink-caret .75s step-end infinite;
+}
+        
     </style>
 </head>
 <body>
@@ -56,8 +73,9 @@
 </div>
 <div class="form-description">
     <h4>Form Description</h4>
-    <p>This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program. The data will support effective planning, monitoring, and coordination of protection activities across different groups and communities.</p>
-    <p style="margin-bottom: 0; font-weight: 300;"><i>All information provided will be used solely for programmatic purposes and handled with confidentiality. Your cooperation in providing accurate and complete information is highly appreciated.</i></p>
+    <p id="typewriter-p1" class="typewriter-text"></p>
+    <br><br>
+    <p id="typewriter-p2" style="margin-bottom: 0; font-weight: 300; font-style: italic;" class="typewriter-text"></p>
 </div>
 
 <form id="cbpForm" class="container">
@@ -212,6 +230,34 @@
             alert("Connection error.");
         }
     }
+
+    const text1 = "This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program. The data will support effective planning, monitoring, and coordination of protection activities across different groups and communities.";
+const text2 = "All information provided will be used solely for programmatic purposes and handled with confidentiality. Your cooperation in providing accurate and complete information is highly appreciated.";
+
+function typeWriter(text, elementId, speed, callback) {
+    let i = 0;
+    const element = document.getElementById(elementId);
+    element.classList.add('cursor-blink');
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        } else {
+            element.classList.remove('cursor-blink'); // Remove cursor when done
+            if (callback) callback();
+        }
+    }
+    type();
+}
+
+// Start typing when the window loads
+window.onload = function() {
+    typeWriter(text1, "typewriter-p1", 25, () => {
+        typeWriter(text2, "typewriter-p2", 20);
+    });
+};
 </script>
 </body>
 </html>

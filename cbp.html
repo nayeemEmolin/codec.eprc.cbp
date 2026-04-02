@@ -61,10 +61,59 @@
 .cursor-blink {
     animation: blink-caret .75s step-end infinite;
 }
+        /* 2. ADD THESE ANIMATION STYLES */
+    #door-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .door {
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+    }
+
+    #left-door { left: 0; border-right: 2px solid #00ff99; }
+    #right-door { right: 0; border-left: 2px solid #00ff99; }
+
+    #start-btn {
+        position: relative;
+        z-index: 10001;
+        padding: 20px 40px;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #fff;
+        background: transparent;
+        border: 2px solid #00ff99;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
+        transition: 0.3s;
+    }
+
+    .open-left { transform: translateX(-100%); }
+    .open-right { transform: translateX(100%); }
+    .fade-out { opacity: 0; pointer-events: none; transition: 0.5s; }
         
     </style>
 </head>
 <body>
+    <div id="door-container">
+    <div id="left-door" class="door"></div>
+    <div id="right-door" class="door"></div>
+    <button id="start-btn" onclick="openSystem()">ENTER CBP SYSTEM</button>
+    </div>
 
 <div class="bg-overlay"></div>
 <div class="header">
@@ -239,33 +288,47 @@
         }
     }
 
-    const text1 = "This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program. The data will support effective planning, monitoring, and coordination of protection activities across different groups and communities.";
-const text2 = "All information provided will be used solely for programmatic purposes and handled with confidentiality. Your cooperation in providing accurate and complete information is highly appreciated.";
+// 3. REPLACE YOUR TYPEWRITER & SOUND LOGIC
+const typeSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTdvT18AZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYQ==');
+typeSound.volume = 0.15;
+
+const text1 = "This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program...";
+const text2 = "All information provided will be used solely for programmatic purposes...";
+
+function openSystem() {
+    document.getElementById('start-btn').classList.add('fade-out');
+    document.getElementById('left-door').classList.add('open-left');
+    document.getElementById('right-door').classList.add('open-right');
+    
+    // Start typing half-way through the door animation
+    setTimeout(() => {
+        typeWriter(text1, "typewriter-p1", 30, () => {
+            typeWriter(text2, "typewriter-p2", 25);
+        });
+    }, 600);
+
+    // Clean up the overlay so it doesn't block the form
+    setTimeout(() => {
+        document.getElementById('door-container').style.display = 'none';
+    }, 1500);
+}
 
 function typeWriter(text, elementId, speed, callback) {
     let i = 0;
     const element = document.getElementById(elementId);
-    element.classList.add('cursor-blink');
-    
     function type() {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
+            const s = typeSound.cloneNode();
+            s.play().catch(()=>{}); // Catch browser block
             i++;
             setTimeout(type, speed);
-        } else {
-            element.classList.remove('cursor-blink'); // Remove cursor when done
-            if (callback) callback();
+        } else if (callback) {
+            callback();
         }
     }
     type();
 }
-
-// Start typing when the window loads
-window.onload = function() {
-    typeWriter(text1, "typewriter-p1", 25, () => {
-        typeWriter(text2, "typewriter-p2", 20);
-    });
-};
 </script>
 </body>
 </html>

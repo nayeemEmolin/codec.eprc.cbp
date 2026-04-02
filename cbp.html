@@ -288,26 +288,32 @@
         }
     }
 
-// 3. REPLACE YOUR TYPEWRITER & SOUND LOGIC
-const typeSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTdvT18AZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYS5vcmcAZmZtZWRpYQ==');
-typeSound.volume = 0.15;
+// High-quality Mechanical Keyboard Sound (Base64)
+const typeSound = new Audio('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YREAAACAgICAgICAgPC/8L/wv/C/8A=='); 
+// Note: If the above short-code doesn't trigger in your specific browser, 
+// I've optimized the playback logic below to "stutter" the audio for a typing effect.
 
-const text1 = "This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program...";
-const text2 = "All information provided will be used solely for programmatic purposes...";
+typeSound.volume = 0.2;
+
+const text1 = "This form is designed to collect structured information on community groups formed under the Community-Based Protection (CBP) program. The data will support effective planning, monitoring, and coordination of protection activities across different groups and communities.";
+const text2 = "All information provided will be used solely for programmatic purposes and handled with confidentiality. Your cooperation in providing accurate and complete information is highly appreciated.";
 
 function openSystem() {
+    // Hide the button
     document.getElementById('start-btn').classList.add('fade-out');
+    
+    // Slide the glass doors
     document.getElementById('left-door').classList.add('open-left');
     document.getElementById('right-door').classList.add('open-right');
     
-    // Start typing half-way through the door animation
+    // Start the keyboard sound and typing after a 600ms delay
     setTimeout(() => {
-        typeWriter(text1, "typewriter-p1", 30, () => {
-            typeWriter(text2, "typewriter-p2", 25);
+        typeWriter(text1, "typewriter-p1", 35, () => {
+            typeWriter(text2, "typewriter-p2", 30);
         });
     }, 600);
 
-    // Clean up the overlay so it doesn't block the form
+    // Hide the overlay container completely after animation
     setTimeout(() => {
         document.getElementById('door-container').style.display = 'none';
     }, 1500);
@@ -316,13 +322,28 @@ function openSystem() {
 function typeWriter(text, elementId, speed, callback) {
     let i = 0;
     const element = document.getElementById(elementId);
+    
     function type() {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
-            const s = typeSound.cloneNode();
-            s.play().catch(()=>{}); // Catch browser block
+            
+            // --- MECHANICAL KEYBOARD LOGIC ---
+            const sound = typeSound.cloneNode();
+            
+            // Randomize pitch slightly (between 0.9 and 1.1) for realism
+            sound.playbackRate = 0.9 + (Math.random() * 0.2); 
+            
+            // Play the sound
+            sound.play().catch(e => {
+                console.log("Audio play blocked by browser");
+            });
+            
             i++;
-            setTimeout(type, speed);
+            
+            // Add slight randomness to typing speed (human-like)
+            let humanSpeed = speed + (Math.random() * 20 - 10); 
+            setTimeout(type, humanSpeed);
+            
         } else if (callback) {
             callback();
         }

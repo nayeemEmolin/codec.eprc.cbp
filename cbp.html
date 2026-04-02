@@ -97,10 +97,18 @@
     <div class="field"><label>Mobile Number</label><input type="text" name="mobile" pattern="01[0-9]{9}" required></div>
     <div class="field"><label>Education</label><input type="text" name="education"></div>
     <div class="field"><label>Occupation</label><input type="text" name="occupation"></div>
-    <div class="field"><label>Disability Status</label>
-        <select name="disability" required><option value="No">No</option><option value="Yes (Self Declared)">Yes (Self Declared)</option></select>
+    <div class="field">
+    <label>Disability Status</label>
+    <select id="disability" name="disability" onchange="toggleField('disability', 'disabilityTypeField', 'Yes (Self Declared)')" required>
+        <option value="No">No</option>
+        <option value="Yes (Self Declared)">Yes (Self Declared)</option>
+    </select>
     </div>
-
+    
+    <div class="field hidden-field" id="disabilityTypeField">
+    <label>What kind of Disability?</label>
+    <input type="text" id="disabilityType" name="disabilityType" placeholder="Describe the disability">
+    </div>
     <div class="section-title">Personal & Location Details</div>
     <div class="field"><label>Date of Birth</label><input type="date" id="dob" name="dob" onchange="calculateAge()" required></div>
     <div class="field"><label>Calculated Age</label><input type="text" id="age" name="age" readonly></div>

@@ -105,6 +105,22 @@
     .open-left { transform: translateX(-100%); }
     .open-right { transform: translateX(100%); }
     .fade-out { opacity: 0; pointer-events: none; transition: 0.5s; }
+    #mute-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--secondary);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    width: 45px;
+    height: 45px;
+    display: none; /* Hidden until doors open */
+}
         
     </style>
 </head>
@@ -114,6 +130,10 @@
     <div id="right-door" class="door"></div>
     <button id="start-btn" onclick="openSystem()">ENTER CBP SYSTEM</button>
     </div>
+    <audio id="bgMusic" loop>
+    <source src="pas.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
 
 <div class="bg-overlay"></div>
 <div class="header">
@@ -302,21 +322,30 @@ const text1 = "This form is designed to collect structured information on commun
 const text2 = "All information provided will be used solely for programmatic purposes and handled with confidentiality. Your cooperation in providing accurate and complete information is highly appreciated.";
 
 function openSystem() {
-    // Hide the button
+    // 1. Start the Background Music
+    const music = document.getElementById('bgMusic');
+    music.volume = 0.2; // Set to 20% volume so it doesn't drown out the typing sound
+    music.play().catch(e => console.log("Music blocked: ", e));
+
+    // 2. Show the Mute Button (if you added one)
+    const muteBtn = document.getElementById('mute-btn');
+    if(muteBtn) muteBtn.style.display = 'block';
+
+    // 3. Hide the "Enter" button
     document.getElementById('start-btn').classList.add('fade-out');
     
-    // Slide the glass doors
+    // 4. Slide the glass doors
     document.getElementById('left-door').classList.add('open-left');
     document.getElementById('right-door').classList.add('open-right');
     
-    // Start the keyboard sound and typing after a 600ms delay
+    // 5. Start the keyboard sound and typing after 600ms
     setTimeout(() => {
         typeWriter(text1, "typewriter-p1", 35, () => {
             typeWriter(text2, "typewriter-p2", 30);
         });
     }, 600);
 
-    // Hide the overlay container completely after animation
+    // 6. Hide the door container completely after animation finishes
     setTimeout(() => {
         document.getElementById('door-container').style.display = 'none';
     }, 1500);
@@ -352,6 +381,16 @@ function typeWriter(text, elementId, speed, callback) {
         }
     }
     type();
+}
+</script>
+    <button id="mute-btn" onclick="toggleMute()" style="display:none; position:fixed; bottom:20px; right:20px; z-index:1001; background:rgba(255,255,255,0.1); border:1px solid #00ff99; color:white; border-radius:50%; width:40px; height:40px; cursor:pointer;">🔊</button>
+
+<script>
+function toggleMute() {
+    const m = document.getElementById('bgMusic');
+    const b = document.getElementById('mute-btn');
+    m.muted = !m.muted;
+    b.innerHTML = m.muted ? "🔇" : "🔊";
 }
 </script>
 </body>

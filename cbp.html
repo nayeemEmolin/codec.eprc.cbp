@@ -262,9 +262,9 @@
         let restrictionMet = true;
         let message = "";
 
-        if ((group === "CMG" || group === "CWG") && age < 25) { restrictionMet = false; message = "Age must be 25+ for Man/Woman groups."; }
-        else if ((group === "CYB" || group === "CYG") && (age < 15 || age > 25)) { restrictionMet = false; message = "Youth age must be 15-25."; }
-        else if (group === "SHG" && age < 18) { restrictionMet = false; message = "SHG requires age 18+."; }
+        if ((group === "CMG" || group === "CWG") && age < 25) { restrictionMet = false; message = "Age must be 25+ for Man/Woman groups. Please enter the correct date of birth."; }
+        else if ((group === "CYB" || group === "CYG") && (age < 15 || age > 25)) { restrictionMet = false; message = "Youth age must be 15-25. Please enter the correct date of birth."; }
+        else if (group === "SHG" && age < 18) { restrictionMet = false; message = "SHG requires age 18+. Please enter the correct date of birth."; }
 
         if (!restrictionMet) { showAlert("Age Restriction", message); return; }
 
